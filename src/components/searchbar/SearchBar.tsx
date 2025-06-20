@@ -1,12 +1,12 @@
 import css from "./SearchBar.module.css";
 import { BsSearch } from "react-icons/bs";
 import toast, { Toaster } from "react-hot-toast";
-import { SearchBarProps } from "./SearchBar.types";
+import type { SearchBarProps } from "../../types/searchBar";
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSubmit }) => {
-  const handleSubmit = (formData: FormData): void => {
-    const searchValue = formData.get("search") as string | null;
-    if (!searchValue?.trim()) {
+const SearchBar = ({ onSubmit }: SearchBarProps) => {
+  const handleSubmit = (formData: FormData) => {
+    const searchValue = formData.get("search") as string;
+    if (searchValue.trim() === "") {
       toast.error(" No search parameter has been entered.");
       return;
     }

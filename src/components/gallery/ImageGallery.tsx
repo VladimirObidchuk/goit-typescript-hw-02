@@ -1,7 +1,8 @@
+import type { ImageGalleryProps } from "../../types/photos";
 import ImageCard from "../imagecard/ImageCard";
 import css from "./ImageGallery.module.css";
 
-const ImageGallery = ({ photos, openModal, bottomRef }) => {
+const ImageGallery = ({ photos, openModal, bottomRef }: ImageGalleryProps) => {
   return (
     <div className={css.gallery}>
       <ul className={css.list}>

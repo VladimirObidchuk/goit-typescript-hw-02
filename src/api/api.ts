@@ -1,10 +1,14 @@
 import axios from "axios";
+import type { Collection } from "../types/photos.ts";
 
 axios.defaults.baseURL = `https://api.unsplash.com`;
 
-export const fetchData = async (searchValue, currentPage) => {
+export const fetchData = async (
+  searchValue: string,
+  currentPage: number
+): Promise<Collection> => {
   const apiKey = import.meta.env.VITE_API_KEY;
-  const apiInstans = axios.get("/search/photos", {
+  const apiInstance = axios.get("/search/photos", {
     params: {
       query: searchValue,
       page: currentPage,
@@ -14,5 +18,5 @@ export const fetchData = async (searchValue, currentPage) => {
       Authorization: `Client-ID ${apiKey}`,
     },
   });
-  return apiInstans;
+  return apiInstance;
 };

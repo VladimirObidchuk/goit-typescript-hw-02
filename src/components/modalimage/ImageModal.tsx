@@ -1,9 +1,15 @@
-import Modal, { Styles } from "react-modal";
-import { ImageModalProps } from "./ImageModal.types";
+import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 
-const customStyles: Styles = {
+interface ImageModalProps {
+  modalIsOpen: boolean;
+  closeModal: () => void;
+  src: string;
+  alt: string;
+}
+
+const customStyles: Modal.Styles = {
   content: {
     top: "50%",
     left: "50%",
@@ -14,12 +20,7 @@ const customStyles: Styles = {
   },
 };
 
-const ImageModal: React.FC<ImageModalProps> = ({
-  modalIsOpen,
-  closeModal,
-  src,
-  alt,
-}) => {
+const ImageModal = ({ modalIsOpen, closeModal, src, alt }: ImageModalProps) => {
   return (
     <Modal
       style={customStyles}
@@ -28,8 +29,8 @@ const ImageModal: React.FC<ImageModalProps> = ({
       overlayClassName="overlay"
     >
       <img
-        src={`${src.raw}&w=800&h=600&fm=webp`}
-        srcSet={`${src.raw}&w=800&h=600&fm=webp 1x, ${src.raw}&w=800&h=600&dpr=2&fm=webp 2x`}
+        src={`${src}&w=800&h=600&fm=webp`}
+        srcSet={`${src}&w=800&h=600&fm=webp 1x, ${src}&w=800&h=600&dpr=2&fm=webp 2x`}
         alt={alt}
       />
     </Modal>

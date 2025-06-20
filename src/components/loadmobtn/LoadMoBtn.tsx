@@ -1,8 +1,8 @@
-type Props = {
+interface LoadMoBtnProps {
   incPage: () => void;
-};
+}
 
-const LoadMoBtn: React.FC<Props> = ({ incPage }) => {
+const LoadMoBtn = ({ incPage }: LoadMoBtnProps) => {
   return <button onClick={incPage}>Load more</button>;
 };
 export default LoadMoBtn;

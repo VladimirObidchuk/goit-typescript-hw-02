@@ -10,35 +10,39 @@ import SearchBar from "./searchbar/SearchBar";
 import ImageModal from "./modalimage/ImageModal";
 import ErrorMessage from "./errormessage/ErrorMessage";
 import LoadMoBtn from "./loadmobtn/LoadMoBtn";
+import type { Photo } from "../types/photos";
 
 export default function App() {
-  const [collection, setCollction] = useState([]);
-  const [searchValue, setSearchValue] = useState<string>("");
+  const [collection, setCollection] = useState<Photo[]>([]);
+  const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
-  const [isError, setIsError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [modalSrc, setModalSrc] = useState<string>("");
-  const [modalAlt, setModalAlt] = useState<string>("");
+  const [modalSrc, setModalSrc] = useState("");
+  const [modalAlt, setModalAlt] = useState("");
 
-  const bottomRef = useRef<HTMLElement>(null);
+  const bottomRef = useRef<HTMLImageElement>(null);
 
-  const handleSearch = (newImage) => {
+  const handleSearch = (newImage: string) => {
+    console.log(" newImage", newImage);
     setSearchValue(newImage);
     setCurrentPage(1);
-    setCollction([]);
+    setCollection([]);
+    setIsError(false);
+    setErrorMessage("");
   };
   const incPage = () => {
     setCurrentPage(currentPage + 1);
   };
-  const openModal = (photo) => {
-    setModalSrc(photo.urls);
+  const openModal = (photo: Photo) => {
+    setModalSrc(photo.urls.raw);
     setModalAlt(photo.alt_description);
-
     setIsOpen(true);
   };
+
   function closeModal() {
     setIsOpen(false);
     setModalSrc("");
@@ -48,23 +52,24 @@ export default function App() {
     if (bottomRef.current && currentPage > 1) {
       bottomRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }, [collection]);
+  }, [collection, currentPage]);
 
   useEffect(() => {
-    if (searchValue === "") return;
-    async function fetchDataCollection() {
+    if (searchValue === "") {
+      setCollection([]);
+      return;
+    }
+    async function fetchDataCollection(): Promise<void> {
       try {
         setLoading(true);
         const collection = await fetchData(searchValue, currentPage);
-        console.log(" collection", collection);
-        setCollction((prevImages) => [
+        setCollection((prevImages: Photo[]) => [
           ...prevImages,
           ...collection.data.results,
         ]);
         setTotalPages(collection.data.total_pages);
-      } catch (err) {
+      } catch {
         setIsError(true);
-        setErrorMessage(err.status);
       } finally {
         setLoading(false);
       }
@@ -81,13 +86,11 @@ export default function App() {
       <SearchBar onSubmit={handleSearch} />
       {loading && <GridLoader />}
       {hasCollection ? (
-        <>
-          <ImageGallery
-            photos={collection}
-            openModal={openModal}
-            bottomRef={bottomRef}
-          />
-        </>
+        <ImageGallery
+          photos={collection}
+          openModal={openModal}
+          bottomRef={bottomRef}
+        />
       ) : !loading && valueSearch && !isError ? (
         <ErrorMessage message="No results" />
       ) : null}

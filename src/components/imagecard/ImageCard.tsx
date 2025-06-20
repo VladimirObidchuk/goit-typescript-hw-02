@@ -1,6 +1,7 @@
+import type { ImageCardProps } from "../../types/photos";
 import css from "./ImageCard.module.css";
 
-const ImageCard = ({ photo, openModal, isLast, bottomRef }) => {
+const ImageCard = ({ photo, openModal, isLast, bottomRef }: ImageCardProps) => {
   return (
     <div className={css.blokimg} onClick={() => openModal(photo)}>
       <img
