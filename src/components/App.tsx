@@ -14,20 +14,19 @@ import type { Photo } from "../types/photos";
 
 export default function App() {
   const [collection, setCollection] = useState<Photo[]>([]);
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
-  const [isError, setIsError] = useState(false);
+  const [isError, setIsError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [modalSrc, setModalSrc] = useState("");
-  const [modalAlt, setModalAlt] = useState("");
+  const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+  const [modalSrc, setModalSrc] = useState<string>("");
+  const [modalAlt, setModalAlt] = useState<string>("");
 
   const bottomRef = useRef<HTMLImageElement>(null);
 
   const handleSearch = (newImage: string) => {
-    console.log(" newImage", newImage);
     setSearchValue(newImage);
     setCurrentPage(1);
     setCollection([]);
@@ -39,7 +38,7 @@ export default function App() {
   };
   const openModal = (photo: Photo) => {
     setModalSrc(photo.urls.raw);
-    setModalAlt(photo.alt_description);
+    setModalAlt(photo.alt_description || "Unsplash photo");
     setIsOpen(true);
   };
 
