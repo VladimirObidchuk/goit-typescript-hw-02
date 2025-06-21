@@ -10,7 +10,7 @@ import SearchBar from "./searchbar/SearchBar";
 import ImageModal from "./modalimage/ImageModal";
 import ErrorMessage from "./errormessage/ErrorMessage";
 import LoadMoBtn from "./loadmobtn/LoadMoBtn";
-import type { Photo } from "../types/photos";
+import type { Collection, Photo } from "../types/photos";
 
 export default function App() {
   const [collection, setCollection] = useState<Photo[]>([]);
@@ -61,7 +61,10 @@ export default function App() {
     async function fetchDataCollection(): Promise<void> {
       try {
         setLoading(true);
-        const collection = await fetchData(searchValue, currentPage);
+        const collection: Collection = await fetchData(
+          searchValue,
+          currentPage
+        );
         setCollection((prevImages: Photo[]) => [
           ...prevImages,
           ...collection.data.results,
